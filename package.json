@@ -1,0 +1,22 @@
+{
+  "name": "jest-pagination",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ugurctaygun/jest-pagination.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ugurctaygun/jest-pagination/issues"
+  },
+  "homepage": "https://github.com/ugurctaygun/jest-pagination#readme",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}
