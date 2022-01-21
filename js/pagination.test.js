@@ -1,5 +1,15 @@
-const pagination = require("./pagination");
+/**
+ * @jest-environment jsdom
+ */
 
-test("Check if the ", () => {
-  expect(sum(1, 2)).toBe(3);
+const domPagination = require("./pagination");
+
+test("Pagination container should not be empty", () => {
+  document.body.innerHTML =
+    '<div class="js-trigger-pagination">' +
+    '  <div class="item"></div>' +
+    '  <div class="item"></div>' +
+    "</div>";
+  const paginate = new domPagination();
+  expect(paginate.getElements().length).not.toBe(undefined);
 });
