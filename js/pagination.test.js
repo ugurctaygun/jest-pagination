@@ -10,6 +10,6 @@ test("Pagination container should not be empty", () => {
     '  <div class="item"></div>' +
     '  <div class="item"></div>' +
     "</div>";
-  const paginate = new domPagination();
-  expect(paginate.getElements().length).not.toBe(undefined);
+  const paginate = new domPagination(".js-trigger-pagination");
+  expect(paginate.getElements()).toBe(undefined);
 });
