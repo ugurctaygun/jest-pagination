@@ -4,12 +4,20 @@
 
 const domPagination = require("./pagination");
 
+document.body.innerHTML = `<div class="container">
+<div class="js-trigger-pagination">'
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+<div class="c-pagination"
+<ul class="pagination"></ul> 
+</div>
+</div>`;
+
 test("Pagination container should not be empty", () => {
-  document.body.innerHTML =
-    '<div class="js-trigger-pagination">' +
-    '  <div class="item"></div>' +
-    '  <div class="item"></div>' +
-    "</div>";
-  const paginate = new domPagination(".js-trigger-pagination");
-  expect(paginate.getElements()).toBe(undefined);
+  const paginate = new domPagination({
+    paginationContainer: ".js-trigger-pagination",
+  });
+  paginate.getElements();
+  expect(paginate.itemsNumber).toBe(2);
 });

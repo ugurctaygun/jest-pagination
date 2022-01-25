@@ -5,4 +5,6 @@ const paginate = new domPagination({
   itemsPerPage: 3,
 });
 
-console.log(paginate);
+paginate.getElements();
+
+console.log(paginate.itemsNumber);

@@ -13,6 +13,12 @@
   text-align: center;
 }
 
+.c-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .pagination {
   display: flex;
   width: 100%;
@@ -33,6 +39,24 @@
   cursor: pointer;
 }
 
+.c-pagination ul li.active {
+  background-color: red;
+  color: white;
+}
+
 .pagination ul li {
   margin: 25px;
+}
+
+.c-pagination__nav {
+  display: flex;
+  justify-content: center;
+}
+
+.c-pagination__nav > div {
+  border: 1px solid #000;
+  margin: 15px;
+  padding: 15px;
+  font-size: 25px;
+  cursor: pointer;
 }

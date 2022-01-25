@@ -26,10 +26,10 @@ class domPagination {
     };
     this.init = function () {
       this.getElements();
-      this.createControls();
+      this.populateNavigation();
       this.paginate();
     };
-    this.init();
+    // this.init();
   }
 
   getElements() {
@@ -38,7 +38,9 @@ class domPagination {
     this.itemsToPaginate = Array.from(container.children);
   }
 
-  createControls() {
+  createNavigationTemplate() {}
+
+  populateNavigation() {
     let container = document.querySelector(this.paginationContainer);
     let controlContainer =
       container.parentElement.querySelector(".c-pagination");
@@ -52,12 +54,16 @@ class domPagination {
       numberBox.innerHTML = i + 1;
       pageNumbers.appendChild(numberBox);
       numberBox.addEventListener("click", () => {
-        this.controlPages(numberBox.innerHTML);
+        Array.from(pageNumbers.getElementsByTagName("li")).forEach((element) =>
+          element.classList.remove("active")
+        );
+        numberBox.classList.add("active");
+        this.pageNumberControls(numberBox.innerHTML);
       });
     }
   }
 
-  controlPages(pageNumber) {
+  pageNumberControls(pageNumber) {
     this.itemsToPaginate.forEach((element) => (element.style.display = "none"));
     let itemsToShow;
     if (pageNumber == 1) {
@@ -77,6 +83,14 @@ class domPagination {
     itemsToShow.forEach((element) => (element.style.display = "block"));
     window.scrollTo({ top: 300, behavior: "smooth" });
   }
+
+  nextPage() {}
+
+  previousPage() {}
+
+  firstPage() {}
+
+  lastPage() {}
 }
 
 module.exports = domPagination;
