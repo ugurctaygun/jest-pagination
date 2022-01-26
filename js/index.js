@@ -6,5 +6,3 @@ const paginate = new domPagination({
 });
 
 paginate.getElements();
-
-console.log(paginate.itemsNumber);
