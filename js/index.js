@@ -5,4 +5,4 @@ const paginate = new domPagination({
   itemsPerPage: 3,
 });
 
-paginate.getElements();
+paginate.init();

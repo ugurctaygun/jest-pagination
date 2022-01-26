@@ -6,18 +6,16 @@ class domPagination {
    * @param {number} currentPage
    * @param {number} itemsPerPage
    * @param {number} itemsNumber
-   * @param {number} range
    */
   constructor(options) {
     this.options = options;
-    const { paginationContainer, itemsPerPage, range } = options;
+    const { paginationContainer, itemsPerPage } = options;
     this.itemsPerPage = Number.isInteger(itemsPerPage)
       ? Number(itemsPerPage)
       : this.itemsNumber;
-    this.range = Number(range) || 10;
     this.itemsNumber = 0;
     this.itemsToPaginate;
-    this.currentPage;
+    this.currentPage = 0;
     this.previousButton;
     this.nextButton;
     this.firstPageButton;
@@ -29,14 +27,6 @@ class domPagination {
         .slice(itemsPerPage)
         .forEach((item) => (item.style.display = "none"));
     };
-    this.init = function () {
-      this.getElements();
-      this.createNavigationTemplate();
-      this.populateNavigation();
-      this.paginate();
-      this.navigationControls();
-    };
-    this.init();
   }
 
   getElements() {
@@ -93,10 +83,11 @@ class domPagination {
       pageNumbers.appendChild(numberBox);
       if (numberBox.innerHTML == 1) [numberBox.classList.add("active")];
     }
-    this.updateNavigation();
+
     this.pageNumberBoxElements = Array.from(
       pageNumbers.getElementsByTagName("li")
     );
+    this.updateNavigation();
     this.pageNumberBoxElements.forEach((element) => {
       element.addEventListener("click", () => {
         let notCurrent = this.pageNumberBoxElements.filter(
@@ -182,10 +173,7 @@ class domPagination {
   }
 
   updateNavigation() {
-    let pageNumberContainer = document.querySelector(".pagination");
-    let pageNumbers = Array.from(
-      pageNumberContainer.getElementsByTagName("li")
-    );
+    let pageNumbers = this.pageNumberBoxElements;
 
     if (pageNumbers[0].classList.contains("active")) {
       this.previousButton.style.display = "none";
@@ -202,10 +190,41 @@ class domPagination {
       this.lastPageButton.style.display = "block";
       this.nextButton.style.display = "block";
     }
+    pageNumbers.forEach((element) => (element.style.display = "block"));
+    for (let i = 0; i < pageNumbers.length; i++) {
+      if (this.currentPage <= 2) {
+        pageNumbers
+          .slice(5)
+          .forEach((element) => (element.style.display = "none"));
+      } else if (this.currentPage > 2) {
+        if (pageNumbers[i].classList.contains("active")) {
+          let previousPages = pageNumbers.slice(
+            pageNumbers.indexOf(pageNumbers[i]) - 2,
+            pageNumbers.indexOf(pageNumbers[i])
+          );
+          let upcomingPages = pageNumbers.slice(
+            pageNumbers.indexOf(pageNumbers[i]) + 1,
+            pageNumbers.indexOf(pageNumbers[i]) + 3
+          );
+          let pageNumbersToShow = previousPages.concat(
+            upcomingPages,
+            pageNumbers[i]
+          );
+          let pagesToHide = pageNumbers.filter((item) => {
+            return !pageNumbersToShow.includes(item);
+          });
+          pagesToHide.forEach((element) => (element.style.display = "none"));
+        }
+      }
+    }
+  }
 
-    // for (let i = 0; i < pageNumbers.length; i++) {
-
-    // }
+  init() {
+    this.getElements();
+    this.createNavigationTemplate();
+    this.populateNavigation();
+    this.paginate();
+    this.navigationControls();
   }
 }
 
