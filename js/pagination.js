@@ -9,18 +9,21 @@ class domPagination {
    */
   constructor(options) {
     this.options = options;
-    const { paginationContainer, itemsPerPage } = options;
+    const { paginationContainer, itemsPerPage, itemsPerPageOptions } = options;
     this.itemsPerPage = Number.isInteger(itemsPerPage)
       ? Number(itemsPerPage)
       : this.itemsNumber;
+    this.itemsPerPageOptions = itemsPerPageOptions || false;
     this.itemsNumber = 0;
     this.itemsToPaginate;
     this.currentPage = 0;
+    this.currentPageBoxElement;
     this.previousButton;
     this.nextButton;
     this.firstPageButton;
     this.lastPageButton;
     this.pageNumberBoxElements;
+    this.selectOption;
     this.paginationContainer = paginationContainer;
     this.paginate = function () {
       this.itemsToPaginate
@@ -57,6 +60,19 @@ class domPagination {
             >>
         </div>
     </div>
+    ${
+      this.itemsPerPageOptions
+        ? `
+        <div class="c-pagination__select">
+            <select id='change-option'>
+              <option value="9">Show 9 per page</option>
+              <option value="6">Show 6 per page</option>
+              <option value="3">Show 3 per page</option>
+            </select>
+          </div>
+          `
+        : ``
+    }
   </div>`;
     navContainer.innerHTML = navTemplate;
     container.appendChild(navContainer);
@@ -66,6 +82,9 @@ class domPagination {
     this.firstPageButton = document.querySelector(".c-pagination__first-page");
     this.nextButton = document.querySelector(".c-pagination__next-page");
     this.lastPageButton = document.querySelector(".c-pagination__last-page");
+    this.itemsPerPageOptions
+      ? (this.selectOption = document.getElementById("change-option"))
+      : false;
   }
 
   populateNavigation() {
@@ -73,6 +92,11 @@ class domPagination {
     let controlContainer =
       container.parentElement.querySelector(".c-pagination");
     let pageNumbers = controlContainer.querySelector(".pagination");
+
+    if (this.itemsPerPage >= this.itemsNumber) {
+      controlContainer.style.display = "none";
+    }
+
     for (
       let i = 0;
       i < Math.ceil(this.itemsNumber / this.itemsPerPage);
@@ -123,20 +147,14 @@ class domPagination {
   }
 
   nextPageAction() {
-    let current = this.pageNumberBoxElements
-      .filter((item) => item.classList.contains("active"))
-      .shift();
     this.pageNumberBoxElements[
-      this.pageNumberBoxElements.indexOf(current) + 1
+      this.pageNumberBoxElements.indexOf(this.currentPageBoxElement) + 1
     ].click();
   }
 
   previousPageAction() {
-    let current = this.pageNumberBoxElements
-      .filter((item) => item.classList.contains("active"))
-      .shift();
     this.pageNumberBoxElements[
-      this.pageNumberBoxElements.indexOf(current) - 1
+      this.pageNumberBoxElements.indexOf(this.currentPageBoxElement) - 1
     ].click();
   }
 
@@ -146,6 +164,17 @@ class domPagination {
 
   lastPageAction() {
     this.pageNumberBoxElements[this.pageNumberBoxElements.length - 1].click();
+  }
+
+  changeItemPerPageAction() {
+    let select = this.selectOption;
+    select.addEventListener("change", (e) => {
+      this.itemsPerPage = e.target.value;
+      this.pageNumberBoxElements.forEach((element) => element.remove());
+      this.paginate();
+      this.populateNavigation();
+      this.currentPageBoxElement.click();
+    });
   }
 
   navigationControls() {
@@ -166,6 +195,9 @@ class domPagination {
         case this.lastPageButton:
           this.lastPageAction();
           break;
+        case this.selectOption:
+          this.changeItemPerPageAction(e.target.value);
+          break;
         default:
           break;
       }
@@ -174,7 +206,9 @@ class domPagination {
 
   updateNavigation() {
     let pageNumbers = this.pageNumberBoxElements;
-
+    this.currentPageBoxElement = this.pageNumberBoxElements
+      .filter((item) => item.classList.contains("active"))
+      .shift();
     if (pageNumbers[0].classList.contains("active")) {
       this.previousButton.style.display = "none";
       this.firstPageButton.style.display = "none";

@@ -2,7 +2,8 @@ import domPagination from "./pagination";
 
 const paginate = new domPagination({
   paginationContainer: ".js-trigger-pagination",
-  itemsPerPage: 3,
+  itemsPerPage: 6,
+  itemsPerPageOptions: true,
 });
 
 paginate.init();
