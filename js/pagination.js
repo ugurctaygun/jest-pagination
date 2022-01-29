@@ -93,6 +93,7 @@ class domPagination {
       container.parentElement.querySelector(".c-pagination");
     let pageNumbers = controlContainer.querySelector(".pagination");
 
+    //POTENTIAL BUG
     if (this.itemsPerPage >= this.itemsNumber) {
       controlContainer.style.display = "none";
     }
@@ -105,7 +106,9 @@ class domPagination {
       let numberBox = document.createElement("li");
       numberBox.innerHTML = i + 1;
       pageNumbers.appendChild(numberBox);
-      if (numberBox.innerHTML == 1) [numberBox.classList.add("active")];
+      if (numberBox.innerHTML == 1) {
+        numberBox.classList.add("active");
+      }
     }
 
     this.pageNumberBoxElements = Array.from(
@@ -147,6 +150,7 @@ class domPagination {
   }
 
   nextPageAction() {
+    console.log(this.currentPageBoxElement.innerHTML);
     this.pageNumberBoxElements[
       this.pageNumberBoxElements.indexOf(this.currentPageBoxElement) + 1
     ].click();

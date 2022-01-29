@@ -1,8 +1,12 @@
+import * as $ from "jquery";
+
+window.$ = $;
+
 import domPagination from "./pagination";
 
 const paginate = new domPagination({
   paginationContainer: ".js-trigger-pagination",
-  itemsPerPage: 6,
+  itemsPerPage: 3,
   itemsPerPageOptions: true,
 });
 
