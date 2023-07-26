@@ -1,2 +1,1 @@
-npm install webpack webpack-cli --save-dev
-npm install jest --save-dev
+A pagination library written for no framework (and no jquery) projects.
